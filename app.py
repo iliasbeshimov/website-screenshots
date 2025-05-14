@@ -4,6 +4,9 @@ import base64
 
 app = Quart(__name__)
 
+# Explicitly set the PROVIDE_AUTOMATIC_OPTIONS configuration
+app.config['PROVIDE_AUTOMATIC_OPTIONS'] = True
+
 @app.route('/screenshot', methods=['POST'])
 async def take_screenshot():
     data = await request.get_json()
