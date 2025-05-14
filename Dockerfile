@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install Playwright dependencies
+# Install Playwright and additional dependencies
 RUN apt-get update && apt-get install -y \
     libnss3 \
     libatk1.0-0 \
@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgbm1 \
     libasound2 \
+    libpango-1.0-0 \
+    libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
