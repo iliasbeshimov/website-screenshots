@@ -4,8 +4,9 @@ from html2image import Html2Image
 
 app = Flask(__name__)
 
-# Explicitly use wkhtmltoimage browser
-hti = Html2Image(browser='wkhtmltoimage')
+# Use default wkhtmltoimage renderer by not specifying a browser
+# Optionally specify the executable path
+hti = Html2Image(executable='/usr/bin/wkhtmltoimage')
 
 @app.route('/screenshot', methods=['POST'])
 def take_screenshot():
@@ -19,7 +20,3 @@ def take_screenshot():
     with open(filename, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
     return jsonify({"screenshot": encoded_string})
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0", port=port)
