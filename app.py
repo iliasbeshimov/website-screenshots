@@ -4,9 +4,8 @@ from html2image import Html2Image
 
 app = Flask(__name__)
 
-# Use default wkhtmltoimage renderer by not specifying a browser
-# Optionally specify the executable path
-hti = Html2Image(executable='/usr/bin/wkhtmltoimage')
+# Use default wkhtmltoimage renderer (no executable parameter)
+hti = Html2Image()
 
 @app.route('/screenshot', methods=['POST'])
 def take_screenshot():
