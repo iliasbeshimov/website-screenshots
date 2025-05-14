@@ -4,7 +4,7 @@ from html2image import Html2Image
 
 app = Flask(__name__)
 
-# Use default wkhtmltoimage renderer (no executable parameter)
+# Use default renderer, which should fall back to wkhtmltoimage
 hti = Html2Image()
 
 @app.route('/screenshot', methods=['POST'])
