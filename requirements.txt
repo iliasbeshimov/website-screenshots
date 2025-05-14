@@ -1,1 +1,2 @@
-playwright==1.44.0
+html2image==2.0.4
+flask==2.3.3
