@@ -1,21 +1,22 @@
-from flask import Flask, request, jsonify
+from quart import Quart, request, jsonify
+from playwright.async_api import async_playwright
 import base64
-from html2image import Html2Image
 
-app = Flask(__name__)
-
-# Use default renderer, which should fall back to wkhtmltoimage
-hti = Html2Image()
+app = Quart(__name__)
 
 @app.route('/screenshot', methods=['POST'])
-def take_screenshot():
-    data = request.get_json()
+async def take_screenshot():
+    data = await request.get_json()
     url = data.get('url')
     if not url:
         return jsonify({"error": "URL is required"}), 400
 
-    filename = "screenshot.png"
-    hti.screenshot(url=url, save_as=filename)
-    with open(filename, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        await page.goto(url)
+        screenshot = await page.screenshot()
+        await browser.close()
+
+    encoded_string = base64.b64encode(screenshot).decode('utf-8')
     return jsonify({"screenshot": encoded_string})
