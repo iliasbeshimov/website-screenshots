@@ -21,5 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code
 COPY app.py .
 
-# Run the Flask app
-CMD ["python", "app.py"]
+# Run the app with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "300", "app:app"]
