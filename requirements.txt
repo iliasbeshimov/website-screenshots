@@ -1,3 +1,22 @@
-quart==0.19.4
-gunicorn==22.0.0
-playwright==1.44.0
+from quart import Quart, request, jsonify
+from playwright.async_api import async_playwright
+import base64
+
+app = Quart(__name__)
+
+@app.route('/screenshot', methods=['POST'])
+async def take_screenshot():
+    data = await request.get_json()
+    url = data.get('url')
+    if not url:
+        return jsonify({"error": "URL is required"}), 400
+
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        await page.goto(url)
+        screenshot = await page.screenshot()
+        await browser.close()
+
+    encoded_string = base64.b64encode(screenshot).decode('utf-8')
+    return jsonify({"screenshot": encoded_string})
