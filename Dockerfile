@@ -18,6 +18,12 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     libpango-1.0-0 \
     libcairo2 \
+    libx11-xcb1 \
+    libxcursor1 \
+    libgtk-3-0 \
+    libpangocairo-1.0-0 \
+    libcairo-gobject2 \
+    libgdk-pixbuf-2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
