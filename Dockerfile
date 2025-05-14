@@ -1,8 +1,8 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies for html2image (wkhtmltoimage)
+# Install system dependencies for wkhtmltoimage
 RUN apt-get update && apt-get install -y \
     wkhtmltopdf \
     libx11-6 \
@@ -22,4 +22,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 
 # Run the app with gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "300", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "1", "--timeout", "300", "app:app"]
