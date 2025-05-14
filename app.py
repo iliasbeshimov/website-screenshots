@@ -1,9 +1,11 @@
-import os
 from flask import Flask, request, jsonify
+import base64
 from html2image import Html2Image
 
 app = Flask(__name__)
-hti = Html2Image()
+
+# Explicitly use wkhtmltoimage browser
+hti = Html2Image(browser='wkhtmltoimage')
 
 @app.route('/screenshot', methods=['POST'])
 def take_screenshot():
